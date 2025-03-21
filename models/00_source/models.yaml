@@ -1,0 +1,168 @@
+version: 2
+
+models:
+  - name: users
+    description: >
+      Base model for Twitter users data, containing cleaned and typed information from raw users.
+      Only includes users created before end of 2021.
+    columns:
+      - name: user_id
+        description: Unique identifier for the user
+      - name: name
+        description: Display name of the user
+      - name: screen_name
+        description: Lowercase username of the user
+      - name: location
+        description: User defined location
+      - name: description
+        description: User profile description
+      - name: url
+        description: Profile URL
+      - name: lang
+        description: User language setting
+      - name: verified
+        description: Boolean indicating if user is verified
+      - name: followers_count
+        description: Number of followers
+      - name: friends_count
+        description: Number of users being followed
+      - name: listed_count
+        description: Number of lists containing this user
+      - name: statuses_count
+        description: Total number of tweets
+      - name: favourites_count
+        description: Number of tweets liked
+      - name: created_at_date
+        description: Date user account was created
+      - name: recorded_at_date
+        description: Date user data was recorded
+      - name: created_at
+        description: Timestamp when user was created
+      - name: recorded_at
+        description: Timestamp when user was recorded
+
+  - name: interactions
+    description: >
+      Base model for Twitter interactions, containing cleaned and typed data from raw tweets.
+      Includes tweets from 2020-2021 in German and English languages.
+    columns:
+      - name: tweet_id
+        description: Unique identifier for the tweet
+      - name: user_id
+        description: User who created the tweet
+      - name: source_application
+        description: Application used to post tweet
+      - name: retweet_count
+        description: Number of retweets
+      - name: favourite_count
+        description: Number of likes/favourites
+      - name: lang
+        description: Tweet language
+      - name: type
+        description: Type of interaction (tweet, retweet, etc)
+      - name: hashtags
+        description: Array of hashtags used
+      - name: urls
+        description: Array of URLs included
+      - name: mentioned_ids
+        description: Array of mentioned user IDs
+      - name: raw_text
+        description: Original unprocessed tweet text
+      - name: text
+        description: Cleaned tweet text with URLs removed
+      - name: refers_to
+        description: ID of referenced tweet if reply/quote
+      - name: created_at_date
+        description: Date tweet was created
+      - name: recorded_at_date
+        description: Date tweet was recorded
+      - name: created_at
+        description: Timestamp of tweet creation
+      - name: recorded_at
+        description: Timestamp when tweet was recorded
+
+  - name: ext_epi_netz_de
+    description: >
+      Processed version of the `ext_epi_netz_de` dataset containing standardized and cleaned information 
+      on German politicians and their Twitter presence.
+    columns:
+      - name: user_id
+        description: Unique Twitter user ID of the politician.
+        tests:
+          - not_null
+          - unique
+      - name: official_name
+        description: Full name of the politician.
+      - name: party
+        description: Political party affiliation of the politician.
+      - name: region
+        description: Geographic region represented by the politician.
+      - name: institution
+        description: The political institution to which the politician belongs.
+      - name: office
+        description: Political office held by the politician.
+      - name: twitter_name
+        description: Twitter display name of the politician.
+      - name: twitter_handle
+        description: Twitter handle (username) in lowercase.
+      - name: year_of_birth
+        description: Year of birth of the politician.
+        tests:
+          - not_null
+      - name: abgeordnetenwatch_id
+        description: ID from the abgeordnetenwatch.de platform.
+      - name: gender
+        description: Gender of the politician.
+      - name: wikidata_id
+        description: Wikidata entity ID for the politician.
+
+  - name: hashtag_categorisation
+    description: >
+      Table containing categorized hashtag usage, including engagement statistics, political relevance, and confidence scores.
+      Each hashtag is categorized and includes metrics about its usage across different user types.
+    columns:
+      - name: hashtag
+        description: The lowercase, trimmed hashtag text without the # symbol
+        tests:
+          - not_null
+          - unique
+      - name: usage_count
+        description: Total number of times this hashtag was used across all tweets
+        tests:
+          - not_null
+      - name: unique_users
+        description: Number of distinct users who used this hashtag
+        tests:
+          - not_null
+      - name: politician_users
+        description: Number of verified politicians who used this hashtag
+        tests:
+          - not_null
+      - name: first_used_at
+        description: Timestamp of the first occurrence of this hashtag in the dataset
+        tests:
+          - not_null
+      - name: last_used_at
+        description: Timestamp of the most recent occurrence of this hashtag
+        tests:
+          - not_null
+      - name: pct_political_users
+        description: Percentage of unique users who are politicians (0-100)
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 100]
+      - name: days_active
+        description: Number of days between first and last usage of the hashtag
+        tests:
+          - not_null
+      - name: categories
+        description: Comma-separated list of political categories this hashtag belongs to
+        tests:
+          - not_null
+      - name: confidence
+        description: Confidence score (0-1) for the categorization accuracy
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]

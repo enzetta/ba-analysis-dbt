@@ -1,0 +1,327 @@
+version: 2
+
+sources:
+  - name: base_twitter_raw
+    database: grounded-nebula-408412
+    schema: base_twitter_raw
+    description: Raw Twitter data from Zenodo dataset
+    tables:
+      - name: raw_zenodo
+        description: >
+          Raw Twitter data containing tweets, user information, and interactions between 2020-2021
+          for German and English tweets.
+        columns:
+          - name: twista
+            description: Version of the Twista tool used for data collection
+            data_type: STRING
+            mode: NULLABLE
+          - name: type
+            description: Type of entry (retweet, reply, quote, user, status)
+            data_type: STRING
+            mode: NULLABLE
+          - name: id
+            description: Unique identifier for the tweet or user
+            data_type: STRING
+            mode: NULLABLE
+          - name: user
+            description: User ID associated with the entry
+            data_type: STRING
+            mode: NULLABLE
+          - name: created_at
+            description: Timestamp of when the tweet was created
+            data_type: STRING
+            mode: NULLABLE
+          - name: recorded_at
+            description: Timestamp of when the tweet was recorded by Twista
+            data_type: STRING
+            mode: NULLABLE
+          - name: source
+            description: Source application or tool used to post the tweet
+            data_type: STRING
+            mode: NULLABLE
+          - name: retweets
+            description: Number of retweets
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: favourites
+            description: Number of favourites (likes)
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: lang
+            description: Language of the tweet
+            data_type: STRING
+            mode: NULLABLE
+          - name: hashtags
+            description: List of hashtags used in the tweet
+            data_type: STRING
+            mode: REPEATED
+          - name: urls
+            description: List of URLs used in the tweet
+            data_type: STRING
+            mode: REPEATED
+          - name: mentions
+            description: Usernames mentioned in the tweet
+            data_type: STRING
+            mode: REPEATED
+          - name: mentioned_ids
+            description: User IDs of the mentioned users
+            data_type: STRING
+            mode: REPEATED
+          - name: text
+            description: Text content of the tweet
+            data_type: STRING
+            mode: NULLABLE
+          - name: refers_to
+            description: ID of the tweet to which it refers (in replies, retweets, or quotes)
+            data_type: STRING
+            mode: NULLABLE
+          - name: name
+            description: Display name of the user
+            data_type: STRING
+            mode: NULLABLE
+          - name: screen_name
+            description: Username of the user
+            data_type: STRING
+            mode: NULLABLE
+          - name: location
+            description: User-defined location for their account
+            data_type: STRING
+            mode: NULLABLE
+          - name: description
+            description: The user-defined description of the profile
+            data_type: STRING
+            mode: NULLABLE
+          - name: url
+            description: URL provided by the user in their profile
+            data_type: STRING
+            mode: NULLABLE
+          - name: verified
+            description: Boolean indicating whether the user is verified
+            data_type: BOOLEAN
+            mode: NULLABLE
+          - name: followers
+            description: Number of followers
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: friends
+            description: Number of accounts the user is following
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: listed
+            description: Number of public lists that this user is a member of
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: statuses
+            description: Number of tweets (including retweets) issued by the user
+            data_type: INTEGER
+            mode: NULLABLE
+
+      - name: ext_epi_netz_de
+        description: >
+          External data mapping German politicians to their Twitter accounts with additional metadata
+          from the EPI network dataset.
+        columns:
+          - name: user_id
+            description: Unique Twitter user ID of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: official_name
+            description: Official full name of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: party
+            description: Political party affiliation of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: region
+            description: Geographic region represented by the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: institution
+            description: Political institution (e.g., Bundestag, Landtag)
+            data_type: STRING
+            mode: NULLABLE
+          - name: office
+            description: Political office held by the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: twitter_name
+            description: Official Twitter display name
+            data_type: STRING
+            mode: NULLABLE
+          - name: twitter_handle
+            description: The politician's Twitter username in lowercase
+            data_type: STRING
+            mode: NULLABLE
+          - name: year_of_birth
+            description: Birth year of the politician
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: abgeordnetenwatch_id
+            description: Unique ID from the abgeordnetenwatch.de platform
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: gender
+            description: Gender of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: wikidata_id
+            description: Wikidata entity ID for the politician
+            data_type: STRING
+            mode: NULLABLE
+
+      - name: hashtag_categorisation
+        description: >
+          Table containing categorized hashtag usage, including engagement statistics, political relevance, and confidence scores.
+        columns:
+          - name: hashtag
+            description: The hashtag being analyzed
+            data_type: STRING
+            mode: NULLABLE
+          - name: usage_count
+            description: The total number of times the hashtag was used
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: unique_users
+            description: The number of unique users who used the hashtag
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: politician_users
+            description: The number of politicians who used the hashtag
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: first_used_at
+            description: The timestamp when the hashtag was first used
+            data_type: STRING
+            mode: NULLABLE
+          - name: last_used_at
+            description: The timestamp when the hashtag was last used
+            data_type: STRING
+            mode: NULLABLE
+          - name: pct_political_users
+            description: The percentage of users who are politicians
+            data_type: FLOAT
+            mode: NULLABLE
+          - name: days_active
+            description: The number of days between the first and last use of the hashtag
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: categories
+            description: The assigned categories for the hashtag, separated by semicolons (`;`)
+            data_type: STRING
+            mode: NULLABLE
+          - name: confidence
+            description: Confidence score (0-1) indicating the reliability of the categorization
+            data_type: FLOAT
+            mode: NULLABLE
+
+  - name: external_sources
+    description: "External data sources"
+    database: grounded-nebula-408412
+    schema: external_sources
+    tables:
+      - name: epi_netz_de
+        description: >
+          German politician data from epi-netz.de containing detailed information about politicians,
+          their party affiliations, and social media presence.
+        columns:
+          - name: user_id
+            description: Unique Twitter user ID of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: official_name
+            description: Official full name of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: party
+            description: Political party affiliation of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: region
+            description: Geographic region represented by the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: institution
+            description: Political institution (e.g., Bundestag, Landtag)
+            data_type: STRING
+            mode: NULLABLE
+          - name: office
+            description: Political office held by the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: twitter_name
+            description: Official Twitter display name
+            data_type: STRING
+            mode: NULLABLE
+          - name: twitter_handle
+            description: The politician's Twitter username in lowercase
+            data_type: STRING
+            mode: NULLABLE
+          - name: year_of_birth
+            description: Birth year of the politician
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: abgeordnetenwatch_id
+            description: Unique ID from the abgeordnetenwatch.de platform
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: gender
+            description: Gender of the politician
+            data_type: STRING
+            mode: NULLABLE
+          - name: wikidata_id
+            description: Wikidata entity ID for the politician
+            data_type: STRING
+            mode: NULLABLE
+
+  - name: hashtag_categories
+    description: >
+      Manual hashtag categorization mapping containing categorized hashtags with usage statistics
+      and confidence scores for political relevance.
+    database: grounded-nebula-408412
+    schema: hashtag_categories
+    tables:
+      - name: categorisation
+        description: >
+          Manually curated hashtag categories with usage statistics and confidence scores
+        columns:
+          - name: hashtag
+            description: The hashtag being analyzed
+            data_type: STRING
+            mode: NULLABLE
+          - name: usage_count
+            description: The total number of times the hashtag was used
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: unique_users
+            description: The number of unique users who used the hashtag
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: politician_users
+            description: The number of politicians who used the hashtag
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: first_used_at
+            description: The timestamp when the hashtag was first used
+            data_type: STRING
+            mode: NULLABLE
+          - name: last_used_at
+            description: The timestamp when the hashtag was last used
+            data_type: STRING
+            mode: NULLABLE
+          - name: pct_political_users
+            description: The percentage of users who are politicians
+            data_type: FLOAT
+            mode: NULLABLE
+          - name: days_active
+            description: The number of days between the first and last use of the hashtag
+            data_type: INTEGER
+            mode: NULLABLE
+          - name: categories
+            description: The assigned categories for the hashtag, separated by semicolons (`;`)
+            data_type: STRING
+            mode: NULLABLE
+          - name: confidence
+            description: Confidence score (0-1) indicating the reliability of the categorization
+            data_type: FLOAT
+            mode: NULLABLE
